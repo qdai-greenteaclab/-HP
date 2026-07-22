@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let questions = [];
   let currentIndex = 0;
   let score = 0;
+  let currentChoices = [];
+  let currentAnswerIndex = -1;
 
   function shuffle(array) {
     const result = array.slice();
@@ -53,7 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderQuestion() {
     const total = questions.length;
     const q = questions[currentIndex];
-    const choices = q.type === 'tf' ? ['〇', '×'] : q.choices;
+    const rawChoices = q.type === 'tf' ? ['〇', '×'] : q.choices;
+    const order = shuffle(rawChoices.map((_, i) => i));
+    currentChoices = order.map(i => rawChoices[i]);
+    currentAnswerIndex = order.indexOf(q.answerIndex);
 
     progressText.textContent = `問題 ${currentIndex + 1} / ${total}`;
     progressFill.style.width = `${(currentIndex / total) * 100}%`;
@@ -62,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     feedbackEl.hidden = true;
     choicesEl.innerHTML = '';
 
-    choices.forEach((choiceLabel, index) => {
+    currentChoices.forEach((choiceLabel, index) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'quiz-choice-btn';
@@ -74,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function handleAnswer(selectedIndex, selectedBtn) {
     const q = questions[currentIndex];
-    const isCorrect = selectedIndex === q.answerIndex;
+    const isCorrect = selectedIndex === currentAnswerIndex;
 
     if (isCorrect) {
       score += 1;
@@ -82,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     Array.from(choicesEl.children).forEach((btn, index) => {
       btn.disabled = true;
-      if (index === q.answerIndex) {
+      if (index === currentAnswerIndex) {
         btn.classList.add('correct');
       } else if (index === selectedIndex) {
         btn.classList.add('incorrect');
