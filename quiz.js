@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startScreen.hidden = true;
     resultEl.hidden = true;
     playArea.hidden = false;
+    questionBox.hidden = false;
     renderQuestion();
   }
 
