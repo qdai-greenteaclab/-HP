@@ -563,6 +563,19 @@ footer .copyright p a:hover{
   .hamburger {
     display: flex; /* ハンバーガーメニューを表示 */
   }
+  .site-header {
+    padding-right: 60px; /* ハンバーガーアイコン分の余白を確保 */
+  }
+  .logo img {
+    height: 36px;
+    margin-right: 8px;
+  }
+  .logo a {
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 130px);
+  }
   .menu {
     position: absolute;
     top: 70px; /* ヘッダーの下に配置 */
