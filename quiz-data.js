@@ -63,5 +63,12 @@ const teaQuizQuestions = [
     question: "番茶は主に、硬くなった葉や遅い時期に収穫した葉を使って作られることが多い。",
     answerIndex: 0,
     explanation: "番茶は、煎茶に使われるような柔らかい新芽ではなく、やや硬めの葉や遅い時期の茶葉を使って作られることが一般的です。"
+  },
+  {
+    type: "choice",
+    question: "チャノキの学名は？",
+    choices: ["カメリア・シネンシス", "カメリア・ジャポニカ", "ロドデンドロン", "カメリア・サザンカ"],
+    answerIndex: 0,
+    explanation: "チャノキの学名はCamelia sinensis。分類としてはツバキ科ツバキ属に属する。"
   }
 ];
