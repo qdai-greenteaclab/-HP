@@ -218,8 +218,22 @@
 }
 
 .report-card .report-date {
+  display: block;
   color: #777777;
   font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.report-card .report-series {
+  display: inline-block;
+  background-color: #0d6828;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  margin-right: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 
 .report-card h3 {
