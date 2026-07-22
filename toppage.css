@@ -537,11 +537,15 @@ footer .address p{
   color: #ffffff;
 }
 footer .footer-menu {
-    display: inline-block;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 3rem;
+    row-gap: 0.4rem;
     margin: 0px 0px 0px 70px;
     font-size: 18px;
     list-style: none;
     line-height: 2rem;
+    vertical-align: top;
 }
 
 /*footer .SNS img:hover {
@@ -603,6 +607,14 @@ footer .copyright p a:hover{
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: calc(100vw - 130px);
+  }
+  footer .footer-menu {
+    grid-template-columns: repeat(2, auto);
+    column-gap: 1.5rem;
+    margin-left: 0;
+  }
+  footer .our-info {
+    margin-left: 20px;
   }
   .more-toggle {
     display: none; /* 開いたハンバーガーメニューの中に、もう一つハンバーガー風ボタンが出るのを防ぐ */
