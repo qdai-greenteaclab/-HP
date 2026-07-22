@@ -1,0 +1,593 @@
+@charset "UTF-8";
+html {
+    scroll-behavior: smooth;
+}
+body {
+    margin: 0;
+    padding-top: 70px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* スクロールで浮かび上がるフェードイン演出（JSがreveal-initを付与した要素のみ対象） */
+.reveal-init {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-init.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+.hamburger {
+    position: absolute;
+    right: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 11;
+}
+.hamburger span {
+    width: 25px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 1px;
+    display: block;
+    transition: 0.3s;
+}
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1a550c;
+    margin: 0 auto;
+    padding: 10px;
+    color: #ffffff;
+    position: fixed;
+    pointer-events: auto;
+    z-index: 10;
+    width: 100%;
+    box-sizing: border-box; /*パディングを含めた幅を100%にする*/
+    top: 0;
+    left: 0;
+    height: 70px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+.site-header.scrolled {
+    background-color: #0d3d08;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.site-header::after {
+    pointer-events: none;
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    height: 50px;
+    margin-right: 15px;
+    justify-content: center;
+}
+.logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.menu ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding-right: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.menu-more {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.more-toggle {
+    background: none;
+    border: none;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.more-toggle span {
+    width: 22px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 1px;
+    display: block;
+}
+
+.more-dropdown {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background-color: #1a550c;
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    min-width: 12rem;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    z-index: 20;
+}
+
+.more-dropdown a {
+    display: block;
+    padding: 0.6rem 1.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.more-dropdown a:hover {
+    background-color: #0d6828;
+}
+
+.more-dropdown.active {
+    max-height: 32rem;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+
+.introduction {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  height: 44rem;
+}
+
+.hero-slideshow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: bottom 20% center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+.introduction::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  z-index: 1;
+}
+
+.textbox {
+  position: absolute;
+  top: 30%;
+  text-align: center;
+  z-index: 2;
+}
+
+.textbox_news {
+  position: relative;
+  left: 0;
+}
+
+.hero-kicker {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 1rem 0;
+  text-align: center;
+  opacity: 0;
+  animation: heroFadeUp 0.9s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.hero-tagline {
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  animation: heroFadeUp 1s ease forwards;
+  animation-delay: 0.35s;
+}
+
+.hero-lead {
+  font-size: 1.15rem;
+  line-height: 2;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  animation: heroFadeUp 1s ease forwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-tagline {
+    font-size: 1.7rem;
+  }
+  .hero-lead {
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+}
+
+.news {
+  /* 方眼紙模様に必須のスタイル */
+  background-image: linear-gradient(0deg, transparent calc(100% - 1px)/*0~(100% - 1px)までを透明にする*/, #d4e4d4 calc(100% - 1px)/*(100% - 1px)~100%までの線の色*/),
+                    linear-gradient(90deg, transparent calc(100% - 1px), #d4e4d4 calc(100% - 1px));
+  background-size: 16px 16px;
+  background-repeat: repeat;
+  background-position: center center;
+
+  /*以下任意のスタイル*/
+  padding: 20px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0d6828;
+  margin-bottom: 20px;
+}
+
+.title_image {
+  width: 50px;
+  height: auto;
+  margin: 0 10px;
+}
+
+.notice-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.notice-item {
+  margin-left: 20px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #0d6828;
+
+  display: flex;       /* 日付とテキストを横並びにする */
+  align-items: center; /* 上下の中心を揃える */
+  gap: 15px;           /* 日付とテキストの間のスキマ */
+}
+
+/* 日付の幅を固定して、テキストの開始位置をきれいに揃える */
+.notice-item .date {
+  flex-shrink: 0;      /* 画面が狭くなっても日付が改行されないようにする */
+  font-weight: bold;   /* 日付を少し目立たせる（お好みで） */
+}
+
+.textbox_news {
+  display: flex;
+  flex-direction: column; /* 縦並びにする */
+  align-items: flex-start; /* 基本は左寄せ */
+}
+
+/* 2. リンク自体を右寄せにして、ボタンのデザインにする */
+.botton-link-news {
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 0;
+  
+  /* 右寄せにする魔法のプロパティ */
+  align-self: flex-end; 
+
+  /* ボタンっぽい見た目の装飾 */
+  background-color: #0d6828; /* 背景を緑に */
+  color: #ffffff;            /* 文字色を白に */
+  padding: 8px 24px;         /* 上下と左右の余白 */
+  border-radius: 4px;        /* 角を少し丸める */
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.3s; /* ホバー時のアニメーション */
+}
+
+/* 3. マウスを乗せたとき（ホバー時）の演出 */
+.botton-link-news:hover {
+  background-color: #aedebd; /* 少し暗い緑にしてボタン感を出す */
+  color: #140606;
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10rem;
+}
+
+/* 内側の余計な装飾があればリセット（念のため） */
+.contents-botton {
+  text-align: center;
+}
+
+.title-a {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0d6828;
+  position: relative;
+  text-align: center;
+  margin-top: 10rem;
+  margin-bottom: 4rem;
+}
+
+/* 1. 親要素をフレックスボックスにして横並びにする */
+.about_us-layout {
+  display: grid; /* 1fr（均等な幅）を2列（横）に並べる */
+  grid-template-columns: repeat(2, 1fr);  /* アイテム同士のすき間（上下左右） */
+  justify-content: center;
+  gap: 20px; /* リンク同士の間隔を調整 */
+  margin-bottom: 20px; /* 下に余白を追加 */
+  gap: 20px; /* グリッドアイテム間のギャップ */
+  max-width: 40rem; /* 最大幅を設定して中央に寄せる */
+  height: auto; /* 高さは自動調整 */
+  margin: 0 auto; /* 中央寄せ */
+}
+
+/* 2. リンク（ボタン1つ分）のベース設定 */
+.botton-link {
+  flex: 1;                        /* 4つのボタンをすべて同じ幅にする */
+  text-decoration: none;          /* リンクの下線を消す */
+  color: #333333;                 /* 文字色（お好みの色に変えてください） */
+}
+
+/* 3. ボタンの内側のレイアウト（画像と文字を中央に寄せる） */
+.group-botton {
+  position: relative; /* ★文字の位置の基準にする */
+  width: 100%;
+  /*aspect-ratio: 1 / 1; *//* ★ボタンをきれいな正方形にする */
+  overflow: hidden;    /* はみ出し防止 */
+}
+
+/* 4. 画像のサイズ調整（大きすぎて崩れるのを防ぐ） */
+.group-botton-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /*画像を綺麗に収める */
+  display: block;
+}
+
+.botton-link:hover .group-botton-img {
+  transform: scale(1.05); /* 画像を少し拡大 */
+  transition: transform 0.3s ease; /* スムーズなアニメーション */
+  filter: brightness(70%);
+}
+
+.group-botton span {
+  position: absolute; /* ★位置を自由に動かせるようにする */
+  top: 50%;           /* 上から50% */
+  left: 50%;          /* 左から50% */
+  transform: translate(-50%, -50%); /* ★これでピッタリ中央になります */
+  
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  z-index: 1;
+}
+
+.box-link {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 項目数に応じて自動で折り返す */
+  justify-content: center;
+  gap: 2rem; /* リンク同士の間隔を調整 */
+  max-width: 50rem; /* 最大幅を設定して中央に寄せる */
+  height: auto; /* 高さは自動調整 */
+  margin: 0 auto; /* 中央寄せ */
+}
+
+.item-link {
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 0;
+  background-color: #0d6828; /* 背景を緑に */
+  color: #ffffff;            /* 文字色を白に */
+  padding: 8px 24px;         /* 上下と左右の余白 */
+  border-radius: 4px;        /* 角を少し丸める */
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: flex; /* アイコンとテキストを横並びにする */
+  justify-content: center; /* 中央揃え */
+  align-items: center; /* アイコンとテキストの縦位置を揃える */
+  white-space: nowrap; /* テキストが折り返されないようにする */
+  img {
+    width: 4rem; /* アイコンのサイズを調整 */
+    height: auto;
+    margin-right: 1rem; /* アイコンとテキストの間に余白を追加 */
+    padding: 0.5rem; /* アイコンの内側に余白を追加 */
+  }
+}
+
+.item-link:hover {
+  background-color: #aedebd; /* 少し暗い緑にしてボタン感を出す */
+  color: #140606;
+  transform: scale(1.1); /* 少し拡大 */
+  transition: transform 0.3s ease, background-color 0.3s ease; /* スムーズなアニメーション */
+}
+
+footer {
+    padding: 5rem 0 10px 0;
+    width: 100%;
+    background-color: #1a550c;
+    color: #ffffff;
+    font-weight: 700;
+        margin: 0; 
+}
+footer a{
+  color: #ffffff;
+  text-decoration: none;
+}
+footer .our-info{
+  display: inline-block;
+  margin: 0px 0px 0px 50px;
+  vertical-align: top;
+}
+footer .logo_footer a{
+  color: #ffffff;
+  font-size: 24px;
+}
+
+footer .address {
+    margin: 10px 0;
+}
+footer .address p{
+  font-size: 1rem;
+  line-height: 1.2rem;
+  font-weight: 300;
+  color: #ffffff;
+}
+footer .footer-menu {
+    display: inline-block;
+    margin: 0px 0px 0px 70px;
+    font-size: 18px;
+    list-style: none;
+    line-height: 2rem;
+}
+
+/*footer .SNS img:hover {
+  filter: brightness(30%) saturate(100%) invert(69%) sepia(73%) saturate(300%) hue-rotate(10deg);
+}
+  */
+footer .copyright{
+  border-top: solid 1px #BCBCBCFF;
+  max-width: calc(100% - 50px);
+  margin: 30px auto 0 auto;
+  padding-top: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+footer .copyright p,.copyright p a{
+  font-size: 12px;
+  font-weight: 300;
+  color: #BCBCBCFF;
+}
+
+footer .copyright p a:hover{
+  border-bottom: dashed 0px #BCBCBCFF;
+}
+
+.icon{
+  margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .about_us-layout {
+    flex-wrap: wrap; /* 画面が狭くなったら折り返す */
+  }
+  .botton-link {
+    flex: calc(50% - 15px); /* スマホでは2列ずつ並べる場合 */
+  }
+  .box-link {
+    grid-template-columns: repeat(1, 1fr); /* スマホでは1列にする */
+    gap: 2rem; /* リンク同士の間隔を調整 */
+    max-width: 70%; /* 最大幅を画面幅に合わせる */
+  }
+  .item-link {
+    padding: 6px 12px; /* スマホでは少し小さくする */
+    font-size: 0.8rem; /* フォントサイズも少し小さくする */
+  }
+  .hamburger {
+    display: flex; /* ハンバーガーメニューを表示 */
+  }
+  .menu {
+    position: absolute;
+    top: 70px; /* ヘッダーの下に配置 */
+    right: 0;
+    background-color: #1a550c;
+    width: 100%;
+    text-align: center;
+    z-index: 11;
+    /*amimation初期値*/
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-20px);
+    transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+  }
+  .menu ul {
+    flex-direction: column; /* 縦並びにする */
+    gap: 0; /* 縦並びなのでギャップは不要 */
+    padding: 10px 0; /* 上下に余白を追加 */
+  }
+  .menu.active {
+        pointer-events: auto;
+        max-height: 500px; /*十分な高さを設定*/
+        transform: translateY(0);
+        opacity: 0.9;
+  }
+}
