@@ -49,6 +49,27 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateHeaderShadow, { passive: true });
   }
 
+  // トップページ：キャッチコピーのタイピング演出
+  const typingEl = document.querySelector('.hero-typing-text');
+  if (typingEl) {
+    const fullText = typingEl.dataset.text || '';
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      typingEl.textContent = fullText;
+    } else {
+      let charIndex = 0;
+      const typeNextChar = () => {
+        charIndex += 1;
+        typingEl.textContent = fullText.slice(0, charIndex);
+        if (charIndex < fullText.length) {
+          setTimeout(typeNextChar, 110);
+        }
+      };
+      setTimeout(typeNextChar, 900);
+    }
+  }
+
   // トップページ：ヒーロー写真のスライドショー
   const heroSlides = document.querySelectorAll('.hero-slide');
   if (heroSlides.length > 1) {
