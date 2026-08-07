@@ -282,6 +282,25 @@
   min-width: 15rem;
 }
 
+.voice-qa {
+  margin: 0.8rem 0 0 0;
+}
+
+.voice-qa dt {
+  font-weight: bold;
+  color: #0d6828;
+  margin-top: 0.8rem;
+}
+
+.voice-qa dt:first-child {
+  margin-top: 0;
+}
+
+.voice-qa dd {
+  margin: 0.2rem 0 0 0;
+  color: #444444;
+}
+
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
