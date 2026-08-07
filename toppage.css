@@ -299,8 +299,12 @@ body {
 }
 
 @media (max-width: 768px) {
+  .textbox {
+    padding: 0 0.9rem;
+  }
   .hero-tagline {
-    font-size: 1.7rem;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
   }
   .hero-lead {
     font-size: 1rem;
